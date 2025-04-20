@@ -284,6 +284,72 @@
 
             <!-- Scripts -->
             <script>
+                async function fetchRecipeSuggestions() {
+                    // 🔧 TEST için sabit malzeme listesi (hardcoded)
+                    const ingredients = [
+                        {
+                            name: "chicken",
+                            quantity: "1",
+                            unit: "kg",
+                            expiry: "25-04-2025"
+                        },
+                        {
+                            name: "rice",
+                            quantity: "1",
+                            unit: "cup",
+                            expiry: "26-04-2025"
+                        }
+                    ];
+            
+                    const filters = []; // şimdilik filtre yok
+            
+                    try {
+                        const response = await fetch("http://127.0.0.1:5000/suggest_recipes", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ ingredients, filters })
+                        });
+            
+                        const data = await response.json();
+                        console.log("✅ API’den gelen veri:", data);
+            
+                        if (data.recipes && data.recipes.length > 0) {
+                            renderRecipes(data.recipes);
+                        } else {
+                            document.querySelector(".recipe-slider").innerHTML = `
+                                <p class="text-white">Uygun tarif bulunamadı.</p>
+                            `;
+                        }
+                    } catch (error) {
+                        console.error("🚨 API hatası:", error);
+                    }
+                }
+            
+                function renderRecipes(recipes) {
+                    const container = document.querySelector(".recipe-slider");
+                    container.innerHTML = "";
+            
+                    recipes.forEach(recipe => {
+                        const card = document.createElement("div");
+                        card.className = "card me-3";
+                        card.style.minWidth = "250px";
+                        card.innerHTML = `
+                            <div class="card-body">
+                                <h5 class="card-title">${recipe.name}</h5>
+                                <p class="card-text">Etiket Eşleşmesi: ${recipe.match_count}</p>
+                                <button class="btn btn-success" onclick="alert('Tarif seçildi: ${recipe.name}')">Tarifi Seç</button>
+                            </div>
+                        `;
+                        container.appendChild(card);
+                    });
+                }
+            
+                // "Search" butonuna tıklanınca başlat
+                document.querySelector(".search-button").addEventListener("click", fetchRecipeSuggestions);
+            </script>
+            
+            
+            <script>
                   document.addEventListener("DOMContentLoaded", function () {
                       var dropdownItems = document.querySelectorAll(".dropdown-item");
                       
