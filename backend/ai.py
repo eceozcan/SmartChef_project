@@ -1,18 +1,17 @@
-import requests # type: ignore
+import requests  # type: ignore
 import re
 from fractions import Fraction
 from collections import defaultdict
 from datetime import datetime
 
-# Malzeme isimlerini normalleştirme ve tekil forma indirgeme
+# Normalize and singularize ingredient names
 def normalize(ingredient):
     ingredient = ingredient.strip().lower()
     if ingredient.endswith("s"):
         ingredient = ingredient[:-1]
     return ingredient
 
-
-# Miktar ve birimi ayırma fonksiyonu
+# Function to separate quantity and unit
 def parse_measure(measure):
     measure = measure.strip().lower()
     fraction_match = re.match(r"(\d+/\d+)\s*(.*)", measure)
@@ -25,24 +24,24 @@ def parse_measure(measure):
         return quantity, unit if unit else ""
     return "0", ""
 
-# Malzemeler arasında eşleşme kontrolü
+# Check for ingredient matches
 def is_related_ingredient(user_ing, recipe_ing):
     user_ing = normalize(user_ing)
     recipe_ing = normalize(recipe_ing)
     return user_ing in recipe_ing or recipe_ing in user_ing
 
-# TheMealDB API'den malzeme ile tarif alma
+# Get recipes by ingredient from TheMealDB API
 def get_recipes_by_ingredient(ingredient):
     url = f"https://www.themealdb.com/api/json/v1/1/filter.php?i={ingredient}"
     response = requests.get(url)
     if response.status_code != 200:
-        print(f"'{ingredient}' için API isteği başarısız: {response.status_code}")
+        print(f"API request failed for '{ingredient}': {response.status_code}")
         return []
     data = response.json()
     meals = data.get("meals")
     return meals if meals is not None else []
 
-# get_recipes_by_ingredient içinden gelen tarifleri detaylı kontrol et
+# Strictly filter recipes that actually contain the target ingredient
 def filter_recipes_by_strict_ingredient(recipes, target_ingredient):
     filtered = []
     for recipe in recipes:
@@ -54,8 +53,7 @@ def filter_recipes_by_strict_ingredient(recipes, target_ingredient):
                 break
     return filtered
 
-
-# Tarifin detaylarını alma (malzemeler, açıklama, etiketler)
+# Get recipe details (ingredients, instructions, tags)
 def get_recipe_details(recipe_id):
     url = f"https://www.themealdb.com/api/json/v1/1/lookup.php?i={recipe_id}"
     response = requests.get(url)
@@ -69,34 +67,34 @@ def get_recipe_details(recipe_id):
             if ing and measure:
                 quantity, unit = parse_measure(measure)
                 ingredients[normalize(ing)] = (quantity, unit)
-        instructions = meal.get("strInstructions", "Açıklama bulunamadı.")
+        instructions = meal.get("strInstructions", "No description available.")
         tags = meal.get("strTags", "").split(",") if meal.get("strTags") else []
         tags = [tag.strip().lower() for tag in tags]
         return ingredients, instructions, tags
-    return {}, "Açıklama bulunamadı.", []
+    return {}, "No description available.", []
 
-# Tarif adını alma
+# Get recipe name
 def get_recipe_name(recipe_id):
     url = f"https://www.themealdb.com/api/json/v1/1/lookup.php?i={recipe_id}"
     response = requests.get(url)
     data = response.json()
     if data.get("meals"):
         return data["meals"][0]["strMeal"]
-    return "Bilinmeyen Tarif"
+    return "Unknown Recipe"
 
-# Tüm etiketleri toplama
+# Collect all available tags
 def get_all_tags():
     tags = set()
     url = "https://www.themealdb.com/api/json/v1/1/list.php?c=list"
     response = requests.get(url)
     if response.status_code != 200:
-        print("Kategoriler alınamadı. Lütfen internet bağlantınızı kontrol edin.")
+        print("Failed to fetch categories. Please check your internet connection.")
         return tags
     
     data = response.json()
     categories = data.get("meals", [])
     if not categories:
-        print("Hiç kategori bulunamadı.")
+        print("No categories found.")
         return tags
     
     for category in categories:
@@ -104,7 +102,7 @@ def get_all_tags():
         url = f"https://www.themealdb.com/api/json/v1/1/filter.php?c={category_name}"
         response = requests.get(url)
         if response.status_code != 200:
-            print(f"'{category_name}' kategorisi için tarifler alınamadı.")
+            print(f"Failed to fetch recipes for category '{category_name}'.")
             continue
         
         data = response.json()
@@ -126,35 +124,35 @@ def get_all_tags():
     
     return sorted(list(tags))
 
-# Ana fonksiyon
+# Main function
 def main():
-    # Tüm etiketleri al
-    print("Etiketler yükleniyor...")
+    # Get all available tags
+    print("Loading tags...")
     all_tags = get_all_tags()
     if not all_tags:
-        print("Etiketler alınamadı. Lütfen internet bağlantınızı kontrol edin.")
+        print("Failed to load tags. Please check your internet connection.")
         return
-    print("Mevcut etiketler:", ", ".join(all_tags))
+    print("Available tags:", ", ".join(all_tags))
 
-    # Kullanıcıdan etiket seçimi (birden fazla etiket virgülle ayrılmış veya close)
+    # User selects tags (multiple tags comma-separated or 'close')
     selected_tags = []
     while True:
-        selected_tags_input = input("Lütfen etiketleri virgülle ayırarak girin (örneğin, Dessert, Vegetarian) ya da atlamak için 'close' yazın: ").strip().lower()
+        selected_tags_input = input("Enter tags separated by commas (e.g., Dessert, Vegetarian) or type 'close' to skip: ").strip().lower()
         if selected_tags_input == "close":
             break
         if selected_tags_input:
             selected_tags = [tag.strip() for tag in selected_tags_input.split(",")]
             invalid_tags = [tag for tag in selected_tags if tag not in all_tags]
             if invalid_tags:
-                print(f"Geçersiz etiketler: {', '.join(invalid_tags)}. Lütfen listeden etiketler seçin.")
+                print(f"Invalid tags: {', '.join(invalid_tags)}. Please select from available tags.")
             else:
                 break
 
-    # Kullanıcıdan malzemeleri alma
+    # Get user's ingredients
     user_ingredients = {}
-    print("\nMalzemeleri 'miktar malzeme, GÜN-AY-YIL' formatında girin (örneğin, '1 onion, 10-03-2025'). Bitirmek için 'close' yazın.")
+    print("\nEnter ingredients in 'quantity ingredient, DAY-MONTH-YEAR' format (e.g., '1 onion, 10-03-2025'). Type 'close' to finish.")
     while True:
-        ingredient_input = input("Malzeme girin: ").strip().lower()
+        ingredient_input = input("Enter ingredient: ").strip().lower()
         if ingredient_input == "close":
             break
         match = re.match(r"(\d+/\d+|\d+)\s*(\w*)\s+([^,]+),\s*(\d{2}-\d{2}-\d{4})", ingredient_input)
@@ -163,18 +161,18 @@ def main():
             try:
                 datetime.strptime(expiry_date, "%d-%m-%Y")
             except ValueError:
-                print("Geçersiz tarih formatı! Lütfen GÜN-AY-YIL (örneğin, 10-03-2025) formatında girin.")
+                print("Invalid date format! Please use DAY-MONTH-YEAR format (e.g., 10-03-2025).")
                 continue
             normalized_name = normalize(name.strip())
             user_ingredients[normalized_name] = (quantity, unit if unit else "", expiry_date)
         else:
-            print("Geçersiz giriş! Lütfen 'miktar malzeme, GÜN-AY-YIL' formatında girin (örneğin, '1 onion, 10-03-2025').")
+            print("Invalid input! Please use 'quantity ingredient, DAY-MONTH-YEAR' format (e.g., '1 onion, 10-03-2025').")
 
     if not user_ingredients:
-        print("Hiç malzeme girilmedi!")
+        print("No ingredients entered!")
         return
 
-    # Girilen malzemeler için tarif arama
+    # Find recipes matching the ingredients
     recipe_matches = defaultdict(set)
     for ingredient in user_ingredients.keys():
         recipes = get_recipes_by_ingredient(ingredient)
@@ -182,67 +180,67 @@ def main():
             recipe_id = recipe["idMeal"]
             recipe_matches[recipe_id].add(ingredient)
 
-    # En az 2 malzeme ile eşleşen tarifleri filtreleme
+    # Filter recipes with at least 2 matching ingredients
     min_matches = 2
     filtered_recipes = {k: v for k, v in recipe_matches.items() if len(v) >= min_matches}
 
     if not filtered_recipes:
-        print("Girilen malzemelerle en az 2 malzeme içeren tarif bulunamadı.")
+        print("No recipes found with at least 2 matching ingredients.")
         return
 
-    # Malzemeleri SKT'ye göre sıralama
+    # Sort ingredients by expiration date
     sorted_ingredients = sorted(
         user_ingredients.items(),
         key=lambda x: datetime.strptime(x[1][2], "%d-%m-%Y")
     )
 
-    # Tarifleri SKT gruplarına göre sıralama
+    # Sort recipes by expiration groups
     sorted_recipes = []
-    used_recipe_ids = set()  # Tekrarları önlemek için
+    used_recipe_ids = set()  # To prevent duplicates
     for ing_name, (_, _, expiry_date) in sorted_ingredients:
         expiry_datetime = datetime.strptime(expiry_date, "%d-%m-%Y")
-        # Bu malzemeyi içeren tarifleri al
+        # Get recipes containing this ingredient
         ingredient_recipes = []
         for recipe_id in filtered_recipes.keys():
             if ing_name in recipe_matches[recipe_id] and recipe_id not in used_recipe_ids:
-                # Etiket eşleşmesini hesapla
+                # Calculate tag matches
                 _, _, tags = get_recipe_details(recipe_id)
                 match_count = len([tag for tag in selected_tags if tag in tags]) if selected_tags else 0
                 ingredient_recipes.append((recipe_id, expiry_datetime, match_count))
         
-        # Etiket eşleşmesine ve tarif adına göre sırala
+        # Sort by tag matches and recipe name
         ingredient_recipes.sort(key=lambda x: (-x[2], get_recipe_name(x[0])))
         
-        # Tarifleri ekle ve kullanılanları işaretle
+        # Add recipes and mark as used
         for recipe_id, expiry, match_count in ingredient_recipes:
             sorted_recipes.append((recipe_id, expiry, match_count))
             used_recipe_ids.add(recipe_id)
 
     if not sorted_recipes:
-        print("Uygun tarif bulunamadı.")
+        print("No suitable recipes found.")
         return
 
-    # Tarifleri listeleme
-    print("\nBulunan tarifler:")
+    # Display found recipes
+    print("\nFound recipes:")
     for idx, (recipe_id, _, _) in enumerate(sorted_recipes, start=1):
         print(f"{idx}. {get_recipe_name(recipe_id)}")
 
-    # Kullanıcıdan tarif seçimi
+    # User selects a recipe
     try:
-        selection = int(input("\nSeçmek istediğiniz tarifin numarasını girin: "))
+        selection = int(input("\nEnter the number of the recipe you want to select: "))
         if selection < 1 or selection > len(sorted_recipes):
-            print("Geçersiz numara!")
+            print("Invalid number!")
             return
     except ValueError:
-        print("Lütfen geçerli bir numara girin!")
+        print("Please enter a valid number!")
         return
 
     selected_recipe_id = sorted_recipes[selection - 1][0]
 
-    # Tarifin detaylarını alma
+    # Get recipe details
     recipe_ingredients, instructions, _ = get_recipe_details(selected_recipe_id)
 
-    # Eksik malzemeleri hesaplama
+    # Calculate missing ingredients
     missing_ingredients = []
     for ing, (req_quantity, req_unit) in recipe_ingredients.items():
         matching_ingredients = [user_ing for user_ing in user_ingredients.keys() if is_related_ingredient(user_ing, ing)]
@@ -260,17 +258,18 @@ def main():
         else:
             missing_ingredients.append(f"{req_quantity} {req_unit} {ing}")
 
-    # Sonuçları yazdırma
-    print(f"\nSeçilen tarif: {get_recipe_name(selected_recipe_id)}\n")
-    print("Tarif açıklaması:")
+    # Print results
+    print(f"\nSelected recipe: {get_recipe_name(selected_recipe_id)}\n")
+    print("Recipe instructions:")
     print(instructions)
-    print("\nEksik malzemeler:")
+    print("\nMissing ingredients:")
     if not missing_ingredients:
-        print("Tüm malzemelere sahipsiniz. Tarifi yapabilirsiniz!")
+        print("You have all ingredients needed for this recipe!")
     else:
         print(", \n".join(missing_ingredients))
     
     print("\n\n")
-# Kodu çalıştırma
+
+# Run the code
 # if __name__ == "__main__":
 #     main()

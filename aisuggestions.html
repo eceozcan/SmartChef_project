@@ -311,7 +311,7 @@
                         });
             
                         const data = await response.json();
-                        console.log("✅ API’den gelen veri:", data);
+                        console.log("✅ Data from API:", data);
             
                         if (data.recipes && data.recipes.length > 0) {
                             renderRecipes(data.recipes);

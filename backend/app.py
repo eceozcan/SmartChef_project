@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify # type: ignore
-from flask_cors import CORS # type: ignore
+from flask import Flask, request, jsonify  # type: ignore
+from flask_cors import CORS  # type: ignore
 from collections import defaultdict
 from datetime import datetime
 
-# ai.py'deki yardımcı fonksiyonları import ediyoruz
+# Import helper functions from ai.py
 from ai import (
     normalize,
     get_recipes_by_ingredient,
@@ -16,22 +16,22 @@ from ai import (
 app = Flask(__name__)
 CORS(app)
 
-# Test endpoint (kontrol amaçlı)
+# Test endpoint (for verification)
 @app.route("/test", methods=["GET"])
 def test():
-    return jsonify({"message": "Flask API çalışıyor!"})
+    return jsonify({"message": "Flask API is running!"})
 
-# Arama endpointi - GET yöntemiyle malzeme arama
-@app.route("/api/search", methods=["GET"])  # Bu endpointi kullanın
+# Search endpoint - GET method for ingredient search
+@app.route("/api/search", methods=["GET"])  # Use this endpoint
 def search_recipes():
     ingredient = request.args.get('ingredient')
     if not ingredient:
-        return jsonify({"error": "Ingredient parametresi eksik."}), 400
+        return jsonify({"error": "Missing ingredient parameter."}), 400
 
-    # Malzemeyi virgülle ayırarak birden fazla malzeme olabilir
+    # Split ingredients by comma to handle multiple ingredients
     ingredients_list = [ing.strip().lower() for ing in ingredient.split(",")]
 
-    # Tariflerin birleştirilmiş hali
+    # Combined recipes
     all_recipes = []
 
     for ing in ingredients_list:
@@ -39,12 +39,12 @@ def search_recipes():
         strict_filtered = filter_recipes_by_strict_ingredient(recipes, ing)
         all_recipes.extend(strict_filtered)
 
-    # Benzersiz tarifleri döndür
+    # Return unique recipes
     unique_recipes = {recipe["idMeal"]: recipe for recipe in all_recipes}.values()
 
     return jsonify(list(unique_recipes))
 
-# Tarif öneri endpointi
+# Recipe suggestion endpoint
 @app.route("/suggest_recipes", methods=["POST"])
 def suggest_recipes():
     data = request.json
@@ -60,20 +60,20 @@ def suggest_recipes():
             item["expiry"]
         )
 
-    # Malzeme eşleşmeleri
+    # Ingredient matches
     recipe_matches = defaultdict(set)
     for ingredient in user_ingredients.keys():
         recipes = get_recipes_by_ingredient(ingredient)
-        strict_filtered = filter_recipes_by_strict_ingredient(recipes, ingredient)  # 🔍 sadece gerçekten içerenler
+        strict_filtered = filter_recipes_by_strict_ingredient(recipes, ingredient)  # 🔍 only those that truly contain it
         for recipe in strict_filtered:
             recipe_id = recipe["idMeal"]
             recipe_matches[recipe_id].add(ingredient)
 
     filtered_recipes = {k: v for k, v in recipe_matches.items() if len(v) >= 1}
     if not filtered_recipes:
-        return jsonify({"recipes": [], "message": "Uygun tarif bulunamadı."}), 200
+        return jsonify({"recipes": [], "message": "No suitable recipes found."}), 200
 
-    # SKT'ye göre malzemeleri sırala
+    # Sort ingredients by expiration date
     sorted_ingredients = sorted(
         user_ingredients.items(),
         key=lambda x: datetime.strptime(x[1][2], "%d-%m-%Y")
@@ -90,7 +90,7 @@ def suggest_recipes():
                 match_count = len([tag for tag in filters if tag in tags]) if filters else 0
                 ingredient_recipes.append((recipe_id, expiry_datetime, match_count))
 
-        # Etiket eşleşmesi ve isme göre sırala
+        # Sort by tag match and name
         ingredient_recipes.sort(key=lambda x: (-x[2], get_recipe_name(x[0])))
 
         for recipe_id, expiry, match_count in ingredient_recipes:
