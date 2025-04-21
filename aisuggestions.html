@@ -115,9 +115,10 @@
         <div class="container mt-4">
             <h1>AI Suggestions</h1>
             <div class="search-section">
-                <input type="text" placeholder="Search for Recipe...">
-                <button class="search-button">Search</button>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search for Recipe...">
+                <button class="search-button" id="searchButton">Search</button>
             </div>
+            
 
                 <button class="btn btn-secondary search-button mt-2" onclick="clearSelection()">Option not selected</button>
                 <button class="btn btn-primary search-button mt-2" onclick="selectAll()">All selected</button>
@@ -285,45 +286,49 @@
             <!-- Scripts -->
             <script>
                 async function fetchRecipeSuggestions() {
-                    // 🔧 TEST için sabit malzeme listesi (hardcoded)
-                    const ingredients = [
-                        {
-                            name: "chicken",
-                            quantity: "1",
-                            unit: "kg",
-                            expiry: "25-04-2025"
-                        },
-                        {
-                            name: "rice",
-                            quantity: "1",
-                            unit: "cup",
-                            expiry: "26-04-2025"
-                        }
-                    ];
-            
-                    const filters = []; // şimdilik filtre yok
-            
-                    try {
-                        const response = await fetch("http://127.0.0.1:5000/suggest_recipes", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ ingredients, filters })
-                        });
-            
-                        const data = await response.json();
-                        console.log("✅ Data from API:", data);
-            
-                        if (data.recipes && data.recipes.length > 0) {
-                            renderRecipes(data.recipes);
-                        } else {
-                            document.querySelector(".recipe-slider").innerHTML = `
-                                <p class="text-white">Uygun tarif bulunamadı.</p>
-                            `;
-                        }
-                    } catch (error) {
-                        console.error("🚨 API hatası:", error);
-                    }
-                }
+    const inputValue = document.getElementById("searchInput").value.trim().toLowerCase();
+
+    if (!inputValue) {
+        alert("Please enter an ingredient.");
+        return;
+    }
+
+    const ingredients = [
+        {
+            name: inputValue,
+            quantity: "1",
+            unit: "unit",
+            expiry: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                       .toLocaleDateString("en-GB")
+                       .split("/")
+                       .join("-")
+        }
+    ];
+
+    const filters = [];
+
+    try {
+        const response = await fetch("http://127.0.0.1:5000/suggest_recipes", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ingredients, filters })
+        });
+
+        const data = await response.json();
+        console.log("✅ Data from API:", data);
+
+        if (data.recipes && data.recipes.length > 0) {
+            renderRecipes(data.recipes);
+        } else {
+            document.querySelector(".recipe-slider").innerHTML = `
+                <p class="text-white">Uygun tarif bulunamadı.</p>
+            `;
+        }
+    } catch (error) {
+        console.error("🚨 API hatası:", error);
+    }
+}
+
             
                 function renderRecipes(recipes) {
                     const container = document.querySelector(".recipe-slider");
@@ -345,7 +350,8 @@
                 }
             
                 // "Search" butonuna tıklanınca başlat
-                document.querySelector(".search-button").addEventListener("click", fetchRecipeSuggestions);
+                document.getElementById("searchButton").addEventListener("click", fetchRecipeSuggestions);
+
             </script>
             
             
