@@ -15,6 +15,11 @@
             color: white;
         }
         .category-dropdown { width: 700px; max-height: 400px; overflow-y: auto; }  
+        .dropdown-item.active {
+            background-color: #4caf50;
+            color: white;
+            font-weight: bold;
+        }
 
         .category-dropdown .dropdown-item { 
             white-space: nowrap; padding: 4px 8px; font-size: 0.9rem; 
@@ -128,10 +133,103 @@
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryFilter" data-bs-toggle="dropdown">
                             Filter by Category
                         </button>
-                        <div class="dropdown-menu category-dropdown p-3"> <div class="row row-cols-2 row-cols-md-4 g-2"> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('alcoholic')">Alcoholic</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('baking')">Baking</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('bbq')">BBQ</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('beans')">Beans</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('breakfast')">Breakfast</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('brunch')">Brunch</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('bun')">Bun</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('cake')">Cake</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('calorific')">Calorific</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('caramel')">Caramel</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('casserole')">Casserole</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('cheap')">Cheap</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('cheasy')">Cheasy</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('chilli')">Chilli</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('chocolate')">Chocolate</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('christmas')">Christmas</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('curry')">Curry</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('dairy')">Dairy</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('datenight')">Date Night</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('desert')">Desert</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('dinnerparty')">Dinner Party</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('easter')">Easter</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('egg')">Egg</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('expensive')">Expensive</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('fish')">Fish</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('fresh')">Fresh</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('fruity')">Fruity</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('fusion')">Fusion</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('glazed')">Glazed</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('greasy')">Greasy</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('halloween')">Halloween</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('hangoverfood')">Hangover Food</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('heavy')">Heavy</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('highfat')">High Fat</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('keto')">Keto</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('light')">Light</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('lowcalorie')">Low Calorie</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('lowcarbs')">Low Carbs</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('mainmeal')">Main Meal</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('meat')">Meat</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('mild')">Mild</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('nutty')">Nutty</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('onthego')">On The Go</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('paella')">Paella</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('paleo')">Paleo</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('pancake')">Pancake</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('pasta')">Pasta</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('pie')">Pie</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('pudding')">Pudding</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('pulse')">Pulse</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('salad')">Salad</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('sandwich')">Sandwich</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('sausages')">Sausages</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('savory')">Savory</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('seafood')">Seafood</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('shellfish')">Shellfish</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('sidedish')">Side Dish</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('snack')">Snack</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('soup')">Soup</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('sour')">Sour</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('speciality')">Speciality</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('spicy')">Spicy</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('stew')">Stew</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('streetfood')">Street Food</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('strongflavor')">Strong Flavor</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('summer')">Summer</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('sweet')">Sweet</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('tart')">Tart</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('treat')">Treat</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('unhealthy')">Unhealthy</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('vegan')">Vegan</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('vegetables')">Vegetables</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('vegetarian')">Vegetarian</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('warm')">Warm</a></div> <div class="col"><a class="dropdown-item" href="#" onclick="filterRecipes('warming')">Warming</a></div> </div> </div> </div>
+                        <div class="dropdown-menu category-dropdown p-3">
+                            <div class="row row-cols-2 row-cols-md-4 g-2">
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'alcoholic')">Alcoholic</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'baking')">Baking</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'bbq')">BBQ</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'beans')">Beans</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'breakfast')">Breakfast</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'brunch')">Brunch</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'bun')">Bun</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'cake')">Cake</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'calorific')">Calorific</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'caramel')">Caramel</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'casserole')">Casserole</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'cheap')">Cheap</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'cheasy')">Cheasy</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'chilli')">Chilli</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'chocolate')">Chocolate</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'christmas')">Christmas</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'curry')">Curry</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'dairy')">Dairy</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'datenight')">Date Night</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'desert')">Desert</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'dinnerparty')">Dinner Party</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'easter')">Easter</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'egg')">Egg</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'expensive')">Expensive</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'fish')">Fish</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'fresh')">Fresh</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'fruity')">Fruity</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'fusion')">Fusion</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'glazed')">Glazed</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'greasy')">Greasy</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'halloween')">Halloween</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'hangoverfood')">Hangover Food</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'heavy')">Heavy</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'highfat')">High Fat</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'keto')">Keto</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'light')">Light</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'lowcalorie')">Low Calorie</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'lowcarbs')">Low Carbs</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'mainmeal')">Main Meal</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'meat')">Meat</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'mild')">Mild</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'nutty')">Nutty</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'onthego')">On The Go</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'paella')">Paella</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'paleo')">Paleo</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'pancake')">Pancake</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'pasta')">Pasta</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'pie')">Pie</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'pudding')">Pudding</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'pulse')">Pulse</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'salad')">Salad</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'sandwich')">Sandwich</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'sausages')">Sausages</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'savory')">Savory</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'seafood')">Seafood</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'shellfish')">Shellfish</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'sidedish')">Side Dish</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'snack')">Snack</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'soup')">Soup</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'sour')">Sour</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'speciality')">Speciality</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'spicy')">Spicy</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'stew')">Stew</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'streetfood')">Street Food</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'strongflavor')">Strong Flavor</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'summer')">Summer</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'sweet')">Sweet</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'tart')">Tart</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'treat')">Treat</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'unhealthy')">Unhealthy</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'vegan')">Vegan</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'vegetables')">Vegetables</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'vegetarian')">Vegetarian</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'warm')">Warm</a></div>
+                              <div class="col"><a class="dropdown-item" href="#" onclick="toggleFilter(this, 'warming')">Warming</a></div>
+                            </div>
+                          </div>
+                          
                     </div>
                 </div>
-           
+                <script>
+
+                    function clearFilters() {
+                        // Seçili filtreleri temizle
+                        selectedFilters = [];
+                
+                        // Tüm aktif filtre sınıflarını kaldır
+                        document.querySelectorAll('.dropdown-item.active').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                    }
+                </script>
+                <button class="btn btn-secondary search-button mt-2" onclick="clearFilters()">Clear filters</button>
+
+                
 
             <div class="shopping-list-container mt-4">
                 <ul class="list-group" id="shoppingList">
@@ -147,12 +245,12 @@
                         <span class="expiration-date ms-2">(Expiry: 28-06-2025)</span>
                         <input type="checkbox" class="form-check-input item-checkbox ms-2">
                     </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
                         Water <img src="indir.jpeg" class="ms-2">
                         <span class="quantity-number ms-2">500 ml</span>
                         <span class="expiration-date ms-2">(Expiry: 05-05-2025)</span>
                         <input type="checkbox" class="form-check-input item-checkbox ms-2">
-                    </li>
+                    </li> -->
                 </ul>
             </div>
 
@@ -285,7 +383,19 @@
 
             <!-- Scripts -->
             <script>
-                async function fetchRecipeSuggestions() {
+                let selectedFilters = [];  // ✅ filtre listesi
+
+                function toggleFilter(element, tag) {
+                    if (selectedFilters.includes(tag)) {
+                        selectedFilters = selectedFilters.filter(t => t !== tag);
+                        element.classList.remove("active");
+                    } else {
+                        selectedFilters.push(tag);
+                        element.classList.add("active");
+                    }
+}
+
+async function fetchRecipeSuggestions() {
     const inputValue = document.getElementById("searchInput").value.trim().toLowerCase();
 
     if (!inputValue) {
@@ -305,7 +415,8 @@
         }
     ];
 
-    const filters = [];
+    // const filters = [];
+    const filters = selectedFilters;
 
     try {
         const response = await fetch("http://127.0.0.1:5000/suggest_recipes", {
@@ -321,7 +432,7 @@
             renderRecipes(data.recipes);
         } else {
             document.querySelector(".recipe-slider").innerHTML = `
-                <p class="text-white">Uygun tarif bulunamadı.</p>
+                <p class="text-white">No suitable recipe found.</p>
             `;
         }
     } catch (error) {
@@ -329,7 +440,8 @@
     }
 }
 
-            
+document.getElementById("searchButton").addEventListener("click", fetchRecipeSuggestions);
+   
                 function renderRecipes(recipes) {
                     const container = document.querySelector(".recipe-slider");
                     container.innerHTML = "";

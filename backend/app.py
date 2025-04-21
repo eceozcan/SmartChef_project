@@ -48,6 +48,7 @@ def search_recipes():
 @app.route("/suggest_recipes", methods=["POST"])
 def suggest_recipes():
     data = request.json
+    print("🎯 Gelen filtreler:", data.get("filters"))  # 👈 geçici debug satırı
     ingredients = data.get("ingredients", [])
     filters = data.get("filters", [])
 
@@ -84,8 +85,19 @@ def suggest_recipes():
     for ing_name, (_, _, expiry_date) in sorted_ingredients:
         expiry_datetime = datetime.strptime(expiry_date, "%d-%m-%Y")
         ingredient_recipes = []
-        for recipe_id in filtered_recipes.keys():
-            if ing_name in recipe_matches[recipe_id] and recipe_id not in used_recipe_ids:
+    for recipe_id in list(filtered_recipes.keys()):
+        if recipe_id in used_recipe_ids:
+            continue
+
+        _, _, tags = get_recipe_details(recipe_id)
+        if filters and not any(tag in tags for tag in filters):
+            continue  # ❌ bu tarif filtrelerle eşleşmiyor, geç
+
+        match_count = len([tag for tag in filters if tag in tags]) if filters else 0
+        ingredient_recipes.append((recipe_id, expiry_datetime, match_count))
+
+
+        if ing_name in recipe_matches[recipe_id] and recipe_id not in used_recipe_ids:
                 _, _, tags = get_recipe_details(recipe_id)
                 match_count = len([tag for tag in filters if tag in tags]) if filters else 0
                 ingredient_recipes.append((recipe_id, expiry_datetime, match_count))
@@ -100,6 +112,7 @@ def suggest_recipes():
                 "match_count": match_count
             })
             used_recipe_ids.add(recipe_id)
+            
 
     return jsonify({"recipes": sorted_recipes})
 
