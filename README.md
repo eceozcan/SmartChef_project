@@ -15,6 +15,8 @@ SmartChef projesine şu alanlarda katkı sağladım:
 
 SmartChef şu anda aktif geliştiriliyor. Proje, yeni özelliklerle büyümeye açık bir yapıya sahip!
 
+![SmartChef UI](SmartChef_images/aisuggestion2.png)
+
 ---
 
 **SmartChef** is a modern AI-powered meal planner that helps users with intelligent recipe suggestions, smart inventory tracking, and an intuitive cooking assistant interface.  
