@@ -15,7 +15,10 @@ SmartChef projesine şu alanlarda katkı sağladım:
 
 SmartChef şu anda aktif geliştiriliyor. Proje, yeni özelliklerle büyümeye açık bir yapıya sahip!
 
+![SmartChef UI](SmartChef_images/smartchef_main.png)
+![SmartChef UI](SmartChef_images/first.png)
 ![SmartChef UI](SmartChef_images/aisuggestion2.png)
+![SmartChef UI](SmartChef_images/frontend_recipe_Ex=onion.png)
 
 ---
 
